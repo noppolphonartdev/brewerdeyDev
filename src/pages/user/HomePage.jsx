@@ -301,19 +301,19 @@ function HomePage() {
       title: "วางแผนเริ่มสาย Frontend อย่างเป็นระบบใน 30 วัน",
       description:
         "จัดลำดับการเรียน HTML, CSS, JavaScript และ React ให้ฝึกต่อเนื่องได้จริง",
-      image: "../../src/assets/img/Learning_Insights1.png",
+      image: "../../../public/img/Learning_Insights1.png",
     },
     {
       title: "สูตรลัดการเป็น Frontend Developer",
       description:
         "เน้นใช้งานจริงด้วยพร้อมเทคนิคการจัดโครงสร้างไฟล์ให้โปรเจกต์",
-      image: "../../src/assets/img/Learning_Insights2.png",
+      image: "../../../public/img/Learning_Insights2.png",
     },
     {
       title: "พื้นฐาน Logic และการจัดการข้อมูลเบื้องต้น",
       description:
         "เจาะลึกแนวคิดการทำงานของ Programming และวิธีคิดแบบ Developer เพื่อการแก้ปัญหาอย่างเป็นระบบ",
-      image: "../../src/assets/img/Learning_Insights3.png",
+      image: "../../../public/img/Learning_Insights3.png",
     },
   ];
 
