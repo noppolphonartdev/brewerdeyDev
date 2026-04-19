@@ -98,7 +98,7 @@ function Footer() {
               <li className="flex items-start gap-2">
                 <FaEnvelope className="mt-0.5 text-sky-300" />
                 <a
-                  href="mailto:brewerydev.offical@gmail.com"
+                  href="mailto:brewerydev.official@gmail.com"
                   className="pressable hover:text-white"
                 >
                   brewerydev.official@gmail.com
