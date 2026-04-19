@@ -101,7 +101,7 @@ function Footer() {
                   href="mailto:brewerydev.offical@gmail.com"
                   className="pressable hover:text-white"
                 >
-                  brewerydev.offical@gmail.com
+                  brewerydev.official@gmail.com
                 </a>
               </li>
               <li className="flex items-start gap-2">
