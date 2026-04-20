@@ -351,7 +351,7 @@ function HomePage() {
             </p>
 
             <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl lg:leading-[1.06]">
-              ยกระดับทักษะใหม่ TEST
+              ยกระดับทักษะใหม่
               <br />
               <span className="brand-gradient-text">
                 ด้วยการเรียนออนไลน์กับ BreweryDev
