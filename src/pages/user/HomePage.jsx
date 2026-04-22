@@ -557,7 +557,7 @@ function HomePage() {
             </div>
 
             {/* ปุ่มกดเลือกเทคโนโลยี (วงกลมเรียงกันขวาล่าง) */}
-            <div className="absolute right-6 top-6 flex flex-col gap-4 rounded-full border border-slate-200 bg-white/60 p-4 shadow-xl backdrop-blur-md md:bottom-8 md:right-8 md:top-auto md:flex-row">
+            <div className="absolute left-1/2 top-6 flex flex-row gap-4 rounded-full border border-slate-200 bg-white/60 p-4 shadow-xl backdrop-blur-md md:bottom-8 md:right-6 md:top-auto md:flex-row md:left-auto -translate-x-1/2 md:translate-x-0">
               {coreTechData.map((tech) => (
                 <button
                   key={tech.id}
