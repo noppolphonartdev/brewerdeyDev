@@ -355,9 +355,13 @@ function VideoPlayerPage() {
                   ref={videoRef}
                   controls
                   autoPlay
+                  controlsList="nodownload"
+                  disablePictureInPicture
                   className="h-[56vh] w-full bg-black md:h-[66vh]"
                   onTimeUpdate={handleTimeUpdate}
                   onEnded={handleEnded}
+                  onContextMenu={(e) => e.preventDefault()}
+                  onDragStart={(e) => e.preventDefault()}
                 >
                   <source src={currentVideoUrl} />
                   เบราว์เซอร์ของคุณไม่รองรับการเล่นวิดีโอ

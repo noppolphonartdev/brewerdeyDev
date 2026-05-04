@@ -1,6 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sarabun:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
+/* Video protection styles */
+video {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+video::-webkit-media-controls-panel {
+  -webkit-user-select: none;
+}
+
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+}
+
+/* Prevent right-click on video elements */
+video.context-menu-disabled {
+  pointer-events: none;
+}
+
+/* Hide download button in video controls */
+video[controlsList="nodownload"]::-webkit-media-controls-download-button {
+  display: none;
+}
+
 :root {
   /* Colors */
   --color-bg: #f8fafc;
