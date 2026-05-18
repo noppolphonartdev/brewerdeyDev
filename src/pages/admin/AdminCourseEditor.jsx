@@ -11,7 +11,7 @@ export default function AdminCourseEditor() {
   const isEditing = !!id;
   const token = localStorage.getItem("adminToken");
 
-  const [activeTab, setActiveTab] = useState("basic"); // basic | curriculum | pre | post
+  const [activeTab, setActiveTab] = useState("basic"); // basic | curriculum | pre | post | certificate
   const [loading, setLoading] = useState(isEditing);
   const [submitting, setSubmitting] = useState(false);
 
@@ -25,6 +25,7 @@ export default function AdminCourseEditor() {
     whatYouWillLearn: "",
     targetAudience: "",
     requirements: "",
+    certificateEnabled: false,
   });
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState("");
@@ -47,6 +48,10 @@ export default function AdminCourseEditor() {
   const [videoProgress, setVideoProgress] = useState({});
   const [videoUploadStatus, setVideoUploadStatus] = useState({});
   const videoUploadTimersRef = useRef({});
+
+  // Certificate preview scaling
+  const certContainerRef = useRef(null);
+  const [certScale, setCertScale] = useState(0.55);
 
   const questionKey = (which, qi) => `${which}-${qi}`;
 
@@ -274,6 +279,7 @@ export default function AdminCourseEditor() {
           whatYouWillLearn: full.whatYouWillLearn || "",
           targetAudience: full.targetAudience || "",
           requirements: full.requirements || "",
+          certificateEnabled: !!full.certificateEnabled,
         });
         setPreview(full.image ? resolveMediaUrl(full.image) : "");
         setCurriculum(
@@ -614,7 +620,27 @@ export default function AdminCourseEditor() {
     { id: "curriculum", label: "เนื้อหาหลักสูตร" },
     { id: "pre", label: "แบบทดสอบก่อนเรียน" },
     { id: "post", label: "แบบทดสอบหลังเรียน" },
+    { id: "certificate", label: "ใบรับรอง" },
   ];
+
+  // Responsive certificate scale
+  useEffect(() => {
+    const el = certContainerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        setCertScale(Math.min(1, w / 1120));
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [activeTab]);
+
+  const previewLearnerName = "Noppol Phonart";
+  const previewCourseTitle =
+    String(form.title || "").trim() || "ชื่อคอร์สตัวอย่าง";
+  const previewIssuedAt = new Date().toLocaleDateString("th-TH");
 
   if (loading) {
     return (
@@ -1319,6 +1345,188 @@ export default function AdminCourseEditor() {
                 </div>
               );
             })()}
+
+          {activeTab === "certificate" && (
+            <div className="p-6 space-y-6">
+              <div className="border-b pb-4">
+                <h2 className="text-xl font-bold text-gray-900">
+                  ตั้งค่าใบรับรอง
+                </h2>
+                <p className="mt-1 text-sm text-gray-500">
+                  เปิด/ปิดการออกใบรับรอง และดูตัวอย่างรูปแบบใบรับรองของคอร์ส
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">
+                      สถานะการออกใบรับรอง
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {form.certificateEnabled
+                        ? "คอร์สนี้เข้าร่วมการออกใบรับรอง"
+                        : "คอร์สนี้ยังไม่เข้าร่วมการออกใบรับรอง"}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setForm((prev) => ({
+                        ...prev,
+                        certificateEnabled: !prev.certificateEnabled,
+                      }))
+                    }
+                    className={`rounded-xl px-4 py-2 text-sm font-semibold text-white ${
+                      form.certificateEnabled
+                        ? "bg-amber-500 hover:bg-amber-600"
+                        : "bg-emerald-600 hover:bg-emerald-700"
+                    }`}
+                  >
+                    {form.certificateEnabled
+                      ? "ลบ Certificate"
+                      : "เพิ่ม Certificate"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700">
+                  รูปตัวอย่างใบรับรอง
+                </p>
+                <div
+                  ref={certContainerRef}
+                  className={`overflow-hidden rounded-2xl border border-indigo-100 bg-white p-1 shadow-sm ${
+                    form.certificateEnabled ? "" : "opacity-60"
+                  }`}
+                >
+                  <div
+                    className="relative w-full"
+                    style={{ paddingBottom: "56.25%" }}
+                  >
+                    <div
+                      id="certificate-print"
+                      className="absolute top-0 left-0 w-[1120px] aspect-[16/9] bg-[#0b2a5a] p-6 origin-top-left"
+                      style={{ transform: `scale(${certScale})` }}
+                    >
+                      <div className="relative flex flex-col w-full h-full bg-white rounded-3xl border-[18px] border-[#0b2a5a] overflow-hidden shadow-2xl">
+                        <div className="flex items-center justify-between px-10 pt-8">
+                          <div className="flex items-center gap-3">
+                            <div className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-500 text-xl font-extrabold text-white">
+                              B
+                            </div>
+                            <div>
+                              <p className="text-2xl font-semibold bg-gradient-to-r from-blue-600 to-sky-500 bg-clip-text text-transparent">
+                                BreweryDev
+                              </p>
+                              <p className="text-xs tracking-[0.25em] text-slate-400 uppercase">
+                                Online Learning
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="absolute top-0 right-16 translate-y-6 hidden md:block">
+                          <div className="relative">
+                            <div className="w-40 h-40 rounded-full bg-sky-300 flex items-center justify-center">
+                              <div className="w-28 h-28 rounded-full bg-[#0b2a5a] flex items-center justify-center">
+                                <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-blue-600 via-sky-500 to-cyan-500 text-4xl font-extrabold text-white">
+                                  B
+                                </div>
+                              </div>
+                            </div>
+                            <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-14 h-20 bg-[#0b2a5a] rounded-b-3xl" />
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col items-center justify-center flex-1 min-h-0 px-16 pb-20 pt-6">
+                          <div className="text-center mb-6 mt-4">
+                            <p className="text-[11px] tracking-[0.4em] text-slate-400 uppercase">
+                              Certificate of Completion
+                            </p>
+                            <p className="mt-3 text-5xl font-semibold text-[#1452b8]">
+                              Certificate
+                            </p>
+                            <p className="text-xs tracking-[0.35em] text-slate-400 uppercase mt-1">
+                              of completion
+                            </p>
+                          </div>
+
+                          <div className="text-center mt-6 mb-4">
+                            <p className="text-sm text-slate-500 mb-2">
+                              มอบให้แก่
+                            </p>
+                            <p className="text-3xl font-bold text-slate-900">
+                              {previewLearnerName}
+                            </p>
+                          </div>
+
+                          <div className="text-center text-[13px] text-slate-600 space-y-1 mb-6">
+                            <p>has successfully completed</p>
+                            <p className="font-medium text-slate-800">
+                              {previewCourseTitle}
+                            </p>
+                            <p>an online course offered by BreweryDev</p>
+                            <p className="mt-1 font-semibold">
+                              {previewIssuedAt}
+                            </p>
+                          </div>
+
+                          <div className="mt-6 w-full flex justify-between items-end text-xs text-slate-500">
+                            <div className="flex flex-col gap-2">
+                              <div>
+                                <p>วันที่ออกใบประกาศนียบัตร</p>
+                                <p className="font-semibold text-slate-800">
+                                  {previewIssuedAt}
+                                </p>
+                              </div>
+
+                              <div className="mt-2 w-40 text-center">
+                                <span className="font-signature text-sm text-slate-800 mb-1 block">
+                                  นพพล พลอาจ
+                                </span>
+                                <div className="border-t border-slate-400 pt-1">
+                                  ผู้รับรองหลักสูตร
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="text-right">
+                              <p className="text-[11px] uppercase tracking-[0.2em]">
+                                Certificate Code
+                              </p>
+                              <p className="font-mono text-sm text-slate-800">
+                                CERT-X692-MOF8X1F
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="absolute bottom-10 right-16 hidden md:block">
+                            <div className="relative w-36 h-36 rounded-full border-4 border-slate-700 flex items-center justify-center">
+                              <div className="w-28 h-28 rounded-full border-2 border-slate-400 flex items-center justify-center">
+                                <p className="text-[10px] font-semibold text-slate-700 text-center leading-tight">
+                                  BreweryDev
+                                  <br />
+                                  VERIFIED
+                                  <br />
+                                  COMPLETED
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="absolute bottom-2 left-12 w-[55%] text-[9px] text-slate-400">
+                            BreweryDev has confirmed the identity of this
+                            individual and their participation in the course.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </DashboardLayout>

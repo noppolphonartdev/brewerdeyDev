@@ -277,6 +277,11 @@ function CourseDetail() {
     let alive = true;
 
     const checkCert = async () => {
+      if (!course?.certificateEnabled) {
+        setCertificate({ loading: false, data: null });
+        return;
+      }
+
       //  ยังไม่ผ่าน post-test ไม่ต้องเช็ค certificate เลย
       if (!quizStatus?.post?.passed) {
         setCertificate({ loading: false, data: null });
@@ -309,7 +314,7 @@ function CourseDetail() {
     return () => {
       alive = false;
     };
-  }, [id, token, quizStatus?.post?.passed]);
+  }, [id, token, quizStatus?.post?.passed, course?.certificateEnabled]);
 
   /* เป็นเจ้าของคอร์สแล้วหรือยัง */
   const purchased = useMemo(() => {
@@ -421,7 +426,7 @@ function CourseDetail() {
 
       // ตรวจ Certificate หลังทำ post-test
       if (quiz.type === "post") {
-        if (!nextQuizStatus?.post?.passed) {
+        if (!course?.certificateEnabled || !nextQuizStatus?.post?.passed) {
           setCertificate({ loading: false, data: null });
         } else {
           setCertificate({ loading: true, data: null });
@@ -838,7 +843,11 @@ function CourseDetail() {
                 ซื้อคอร์สนี้
               </button>
             )}
-            {certificate.loading ? (
+            {!course?.certificateEnabled ? (
+              <p className="text-xs text-slate-500 mt-2">
+                คอร์สนี้ไม่เข้าร่วมการออกใบรับรอง Certificate
+              </p>
+            ) : certificate.loading ? (
               <div className="mt-2 space-y-2">
                 <div className="skeleton-shimmer h-3 w-2/3 rounded" />
                 <div className="skeleton-shimmer h-3 w-1/2 rounded" />
@@ -852,7 +861,7 @@ function CourseDetail() {
               </button>
             ) : (
               <p className="text-xs text-slate-500 mt-2">
-                ยังไม่ผ่านเงื่อนไขการออก Certificate
+                คอร์สนี้เข้าร่วมการออกใบรับรอง Certificate
               </p>
             )}
           </div>

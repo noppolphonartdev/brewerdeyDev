@@ -87,7 +87,7 @@ export default function CertificatePage() {
       >
         {/* กรอบด้านใน */}
         <div
-          className="relative w-full h-full bg-white rounded-3xl border-[18px] border-[#0b2a5a] overflow-hidden
+          className="relative flex flex-col w-full h-full bg-white rounded-3xl border-[18px] border-[#0b2a5a] overflow-hidden
                       shadow-2xl print:shadow-none"
         >
           {/* แถบหัวบน (โลโก้) */}
@@ -124,36 +124,39 @@ export default function CertificatePage() {
           </div>
 
           {/* เนื้อหาตรงกลาง */}
-          <div className="flex flex-col items-center justify-center h-full px-16 pb-20 pt-6">
-            {/* ส่วนหัว Certificate */}
-            <div className="text-center mb-6 mt-4">
-              <p className="text-[11px] tracking-[0.4em] text-slate-400 uppercase">
-                Certificate of Completion
-              </p>
-              <p className="mt-3 text-5xl font-semibold text-[#1452b8]">
-                Certificate
-              </p>
-              <p className="text-xs tracking-[0.35em] text-slate-400 uppercase mt-1">
-                of completion
-              </p>
-            </div>
+          <div className="flex flex-col items-center flex-1 min-h-0 px-16 pb-8 pt-6">
+            {/* ส่วนบน: center ในพื้นที่ที่เหลือ */}
+            <div className="flex-1 flex flex-col items-center justify-center">
+              {/* ส่วนหัว Certificate */}
+              <div className="text-center mb-6 mt-4">
+                <p className="text-[11px] tracking-[0.4em] text-slate-400 uppercase">
+                  Certificate of Completion
+                </p>
+                <p className="mt-3 text-5xl font-semibold text-[#1452b8]">
+                  Certificate
+                </p>
+                <p className="text-xs tracking-[0.35em] text-slate-400 uppercase mt-1">
+                  of completion
+                </p>
+              </div>
 
-            {/* ชื่อผู้เรียน */}
-            <div className="text-center mt-6 mb-4">
-              <p className="text-sm text-slate-500 mb-2">มอบให้แก่</p>
-              <p className="text-3xl font-bold text-slate-900">{fullName}</p>
-            </div>
+              {/* ชื่อผู้เรียน */}
+              <div className="text-center mt-6 mb-4">
+                <p className="text-sm text-slate-500 mb-2">มอบให้แก่</p>
+                <p className="text-3xl font-bold text-slate-900">{fullName}</p>
+              </div>
 
-            {/* ข้อความอธิบายคอร์ส */}
-            <div className="text-center text-[13px] text-slate-600 space-y-1 mb-6">
-              <p>has successfully completed</p>
-              <p className="font-medium text-slate-800">{courseTitle}</p>
-              <p>an online course offered by BreweryDev</p>
-              <p className="mt-1 font-semibold">{issuedAt}</p>
+              {/* ข้อความอธิบายคอร์ส */}
+              <div className="text-center text-[13px] text-slate-600 space-y-1 mb-6">
+                <p>has successfully completed</p>
+                <p className="font-medium text-slate-800">{courseTitle}</p>
+                <p>an online course offered by BreweryDev</p>
+                <p className="mt-1 font-semibold">{issuedAt}</p>
+              </div>
             </div>
 
             {/* บรรทัดล่าง (วันที่ + code + ลายเซ็น) */}
-            <div className="mt-6 w-full flex justify-between items-end text-xs text-slate-500">
+            <div className="w-full flex justify-between items-end text-xs text-slate-500">
               <div className="flex flex-col gap-2">
                 <div>
                   <p>วันที่ออกใบประกาศนียบัตร</p>
@@ -168,15 +171,6 @@ export default function CertificatePage() {
                     ผู้รับรองหลักสูตร
                   </div>
                 </div>
-              </div>
-
-              <div className="text-right">
-                <p className="text-[11px] uppercase tracking-[0.2em]">
-                  Certificate Code
-                </p>
-                <p className="font-mono text-sm text-slate-800">
-                  {cert.certificateCode}
-                </p>
               </div>
             </div>
 
@@ -195,8 +189,18 @@ export default function CertificatePage() {
               </div>
             </div>
 
+            {/* Certificate Code ด้านขวาล่าง */}
+            <div className="absolute bottom-6 right-16 text-right text-xs text-slate-500">
+              <p className="text-[11px] uppercase tracking-[0.2em]">
+                Certificate Code
+              </p>
+              <p className="font-mono text-sm text-slate-800">
+                {cert.certificateCode}
+              </p>
+            </div>
+
             {/* ข้อความเล็กด้านล่างซ้าย */}
-            <div className="absolute bottom-6 left-12 w-[55%] text-[9px] text-slate-400">
+            <div className="absolute bottom-2 left-12 w-[55%] text-[9px] text-slate-400">
               BreweryDev has confirmed the identity of this individual and their
               participation in the course.
             </div>

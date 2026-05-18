@@ -202,6 +202,19 @@ function AdminCourses() {
                       {(c.price || 0).toLocaleString()} ฿
                     </p>
                   </div>
+                  <div className="mt-2">
+                    <span
+                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
+                        c.certificateEnabled
+                          ? "bg-emerald-100 text-emerald-700"
+                          : "bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      {c.certificateEnabled
+                        ? "มี Certificate"
+                        : "ไม่มี Certificate"}
+                    </span>
+                  </div>
                   <div className="mt-4 flex gap-2">
                     <button
                       onClick={() => openEdit(c)}
